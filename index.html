@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitácora Lab 2 — ZENZI | Grupo 2 · Toulouse Lautrec</title>
+  <style>
+    :root {
+      --blue: #4352c4;
+      --green: #c8f135;
+      --dark: #1a1a2e;
+      --white: #ffffff;
+      --gray-light: #f5f5f5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f2f8;
+      color: #1a1a2e;
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
+    }
+    .nav-brand { color: var(--white); font-weight: 800; font-size: 1.1rem; letter-spacing: .03em; }
+    .nav-brand span { color: var(--green); }
+    .nav-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: rgba(255,255,255,.82); text-decoration: none;
+      font-size: .82rem; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--blue);
+      color: var(--white);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+      background: #f0f2f8; clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--green); color: var(--dark);
+      font-weight: 800; font-size: .75rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 50px; margin-bottom: 1.4rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900; letter-spacing: -.02em; margin-bottom: .5rem;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p.sub { font-size: 1.1rem; opacity: .85; max-width: 560px; margin: .8rem auto 0; }
+    .meta-row {
+      display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 2rem; font-size: .88rem; opacity: .8;
+    }
+    .meta-row span strong { color: var(--green); }
+
+    /* ── SECTION WRAPPERS ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+    .prom-divider {
+      text-align: center; padding: 3.5rem 1rem 1rem;
+    }
+    .prom-divider .badge {
+      display: inline-flex; align-items: center; gap: .75rem;
+      background: var(--blue); color: var(--white);
+      font-size: 1.7rem; font-weight: 900;
+      padding: .9rem 2.5rem; border-radius: 60px;
+      box-shadow: 0 6px 24px rgba(67,82,196,.4);
+    }
+    .prom-divider .badge .dot { width: 14px; height: 14px; background: var(--green); border-radius: 50%; }
+
+    section.block { padding: 3.5rem 0; }
+    section.block + section.block { border-top: 1px solid #dde2f0; }
+
+    /* ── SECTION HEADER ── */
+    .sec-header { margin-bottom: 1.8rem; }
+    .sec-header .step-tag {
+      font-size: .72rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--blue); opacity: .6;
+      margin-bottom: .4rem;
+    }
+    .sec-header h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 900; color: var(--blue); letter-spacing: -.02em;
+    }
+    .sec-header h2 .accent { color: var(--dark); }
+    .divider-line {
+      width: 48px; height: 4px; background: var(--green);
+      border-radius: 4px; margin-top: .7rem;
+    }
+
+    /* ── TEXT ── */
+    p { margin-bottom: 1rem; color: #2c2c4a; }
+    .highlight { color: var(--blue); font-weight: 700; }
+    ul.styled { padding-left: 1.4rem; margin-bottom: 1rem; }
+    ul.styled li { margin-bottom: .45rem; color: #2c2c4a; }
+
+    /* ── TEAM GRID ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.2rem; margin-top: 1.2rem;
+    }
+    .team-card {
+      background: var(--blue); color: var(--white);
+      border-radius: 16px; padding: 1.4rem 1.2rem;
+      text-align: center;
+    }
+    .team-card img {
+      width: 80px; height: 80px; border-radius: 50%;
+      object-fit: cover; border: 3px solid var(--green);
+      margin-bottom: .9rem;
+    }
+    .team-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: .2rem; }
+    .team-card p { font-size: .78rem; opacity: .85; margin-bottom: .15rem; color: var(--white); }
+    .team-card a { color: var(--green); font-size: .72rem; }
+
+    /* ── STAT CARDS ── */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1.4rem 0; }
+    .stat-card {
+      background: var(--white); border-radius: 14px;
+      padding: 1.4rem 1.2rem; border-left: 5px solid var(--blue);
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    .stat-card .num { font-size: 2rem; font-weight: 900; color: var(--blue); }
+    .stat-card p { font-size: .85rem; margin: 0; color: #444; }
+
+    /* ── PHOTO GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 1.2rem;
+    }
+    .gallery-item {
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0,0,0,.1);
+      background: var(--white);
+    }
+    .gallery-item img {
+      width: 100%; display: block;
+      aspect-ratio: 4/3; object-fit: cover;
+    }
+    .gallery-item.tall img { aspect-ratio: 3/4; }
+    .gallery-item .caption {
+      padding: .7rem 1rem;
+      font-size: .78rem; color: #555; font-style: italic;
+    }
+
+    /* ── TWO-COL ── */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      .two-col { grid-template-columns: 1fr; }
+      nav { flex-direction: column; gap: .5rem; }
+    }
+
+    /* ── CARD BLOCKS ── */
+    .card {
+      background: var(--white); border-radius: 16px;
+      padding: 1.6rem; box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .card h3 {
+      font-size: 1rem; font-weight: 800; color: var(--blue);
+      margin-bottom: .7rem;
+    }
+
+    /* ── VIABILITY ROW ── */
+    .viab-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width: 680px) { .viab-row { grid-template-columns: 1fr; } }
+    .viab-card {
+      background: var(--blue); color: var(--white);
+      border-radius: 14px; padding: 1.4rem;
+      text-align: center;
+    }
+    .viab-card h3 { font-size: .9rem; font-weight: 800; margin-bottom: .6rem; color: var(--green); }
+    .viab-card p { font-size: .85rem; opacity: .9; margin: 0; color: #fff; }
+
+    /* ── ODS ROW ── */
+    .ods-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width: 680px) { .ods-row { grid-template-columns: 1fr; } }
+    .ods-card { border-radius: 14px; padding: 1.4rem; text-align: center; background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+    .ods-card .num { font-size: 2.8rem; font-weight: 900; }
+    .ods-card h3 { font-size: .85rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem; }
+    .ods-card p { font-size: .82rem; color: #444; margin: 0; }
+    .ods-3 { border-top: 6px solid #4caf50; } .ods-3 .num { color: #4caf50; }
+    .ods-4 { border-top: 6px solid #c0392b; } .ods-4 .num { color: #c0392b; }
+    .ods-9 { border-top: 6px solid #e67e22; } .ods-9 .num { color: #e67e22; }
+
+    /* ── PERSONA ── */
+    .persona-box {
+      background: var(--blue); color: var(--white);
+      border-radius: 20px; padding: 2rem;
+      display: grid; grid-template-columns: 180px 1fr; gap: 2rem; align-items: start;
+    }
+    @media (max-width: 680px) { .persona-box { grid-template-columns: 1fr; } }
+    .persona-box img { width: 100%; border-radius: 14px; border: 4px solid var(--green); }
+    .persona-box h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: .2rem; }
+    .persona-box .sub-name { color: var(--green); font-size: .85rem; font-weight: 600; margin-bottom: 1rem; }
+    .persona-box .tag-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .persona-box .tag {
+      background: rgba(255,255,255,.15); padding: .2rem .65rem;
+      border-radius: 50px; font-size: .75rem;
+    }
+    .persona-box .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .persona-box .col2 { grid-template-columns: 1fr; } }
+    .persona-box .mini-card { background: rgba(255,255,255,.1); border-radius: 10px; padding: .9rem; }
+    .persona-box .mini-card h4 { font-size: .75rem; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem; }
+    .persona-box .mini-card li { font-size: .82rem; list-style: none; padding: .15rem 0; opacity: .9; }
+
+    /* ── EMPATHY MAP ── */
+    .empathy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .empathy-card {
+      background: var(--white); border-radius: 14px;
+      padding: 1.4rem; box-shadow: 0 2px 10px rgba(0,0,0,.07);
+      border-top: 4px solid var(--blue);
+    }
+    .empathy-card h3 { font-size: .9rem; font-weight: 800; color: var(--blue); margin-bottom: .6rem; }
+    .empathy-card p { font-size: .84rem; margin: 0; }
+
+    /* ── FODA ── */
+    .foda-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .foda-card { border-radius: 14px; padding: 1.4rem; }
+    .foda-f { background: #e8f4fd; border-left: 5px solid #3498db; }
+    .foda-o { background: #eafaf1; border-left: 5px solid #27ae60; }
+    .foda-d { background: #fef9e7; border-left: 5px solid #f39c12; }
+    .foda-a { background: #fdedec; border-left: 5px solid #e74c3c; }
+    .foda-card h3 { font-weight: 800; margin-bottom: .6rem; font-size: .9rem; }
+    .foda-card li { font-size: .84rem; margin-bottom: .3rem; }
+
+    /* ── INSIGHTS TABLE ── */
+    .insights-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .insights-table th { background: var(--blue); color: #fff; padding: .8rem 1rem; font-size: .82rem; text-align: left; }
+    .insights-table td { padding: .75rem 1rem; font-size: .82rem; border-bottom: 1px solid #e0e5f0; vertical-align: top; }
+    .insights-table tr:nth-child(even) td { background: #f0f4ff; }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      background: #1a1a2e; color: #c8f135;
+      border-radius: 14px; padding: 1.6rem;
+      font-family: 'Courier New', monospace; font-size: .82rem;
+      overflow-x: auto; line-height: 1.7; margin-top: 1rem;
+    }
+
+    /* ── COMPONENTS GRID ── */
+    .comp-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem; margin-top: 1rem;
+    }
+    .comp-card {
+      background: var(--white); border-radius: 12px;
+      padding: 1rem; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    .comp-card img { width: 70px; height: 70px; object-fit: contain; margin-bottom: .5rem; }
+    .comp-card p { font-size: .78rem; font-weight: 700; color: var(--blue); margin: 0; }
+
+    /* ── PRICE TABLE ── */
+    .price-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+    .price-table th { background: #7ecef0; color: #1a1a2e; padding: .8rem 1.2rem; font-size: .85rem; }
+    .price-table td { padding: .7rem 1.2rem; font-size: .85rem; border-bottom: 1px solid #eef; text-align: center; }
+    .price-table tr:last-child td { border-bottom: none; }
+    .price-total { background: var(--green); color: var(--dark); font-weight: 900; font-size: 1.1rem; padding: .8rem 1.2rem; border-radius: 10px; text-align: center; margin-top: .8rem; }
+
+    /* ── COMPETITION CARDS ── */
+    .comp-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    @media (max-width: 680px) { .comp-compare { grid-template-columns: 1fr; } }
+    .comp-comp-card {
+      border-radius: 14px; padding: 1.4rem;
+      background: var(--white); box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      border-top: 5px solid var(--blue);
+    }
+    .comp-comp-card h3 { font-size: 1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+    .comp-comp-card .price-badge { background: var(--green); color: var(--dark); font-weight: 800; font-size: .8rem; padding: .2rem .65rem; border-radius: 50px; display: inline-block; margin-bottom: .8rem; }
+    .comp-comp-card li { font-size: .84rem; margin-bottom: .3rem; }
+
+    /* ── CHANNEL CARDS ── */
+    .channels { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .channel-card {
+      background: var(--blue); color: var(--white);
+      border-radius: 14px; padding: 1.2rem;
+    }
+    .channel-card .num { font-size: 1.8rem; font-weight: 900; color: var(--green); }
+    .channel-card h3 { font-size: .9rem; font-weight: 800; margin-bottom: .5rem; }
+    .channel-card li { font-size: .8rem; opacity: .9; margin-bottom: .2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.65);
+      text-align: center; padding: 2.5rem 1rem;
+      font-size: .82rem; margin-top: 4rem;
+    }
+    footer strong { color: var(--green); }
+
+    /* ── ENCUESTA ── */
+    .survey-list {
+      columns: 2; gap: 1.5rem;
+      background: var(--blue); border-radius: 14px;
+      padding: 1.6rem; color: var(--white);
+    }
+    @media (max-width: 640px) { .survey-list { columns: 1; } }
+    .survey-list li { font-size: .85rem; margin-bottom: .6rem; list-style: disc; margin-left: 1.2rem; }
+
+    /* planos */
+    .planos-img {
+      width: 100%; border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+      margin-top: 1rem;
+    }
+
+    img { max-width: 100%; }
+    .full-img { width: 100%; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,.12); margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">ZENZI <span>·</span> Lab 2</div>
+  <div class="nav-links">
+    <a href="#prom1">Promedio 1</a>
+    <a href="#investigar">Investigar</a>
+    <a href="#idear">Idear</a>
+    <a href="#prototipar1">Prototipo P1</a>
+    <a href="#prom2">Promedio 2</a>
+    <a href="#prototipar2">Prototipo P2</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Ciclo 7 · Toulouse Lautrec</div>
+  <h1>Proyecto de Innovación<br><span>ZENZI</span></h1>
+  <p class="sub">Bitácora completa del Laboratorio de Innovación 2 — Grupo 2</p>
+  <div class="meta-row">
+    <span><strong>Docente:</strong> Yohanna Villanueva</span>
+    <span><strong>Grupo:</strong> 2</span>
+    <span><strong>Slogan:</strong> "El abrazo que calma su mundo"</span>
+  </div>
+</div>
+
+<!-- INTEGRANTES -->
+<div class="container">
+  <section class="block" id="integrantes">
+    <div class="sec-header">
+      <div class="step-tag">Equipo</div>
+      <h2>Grupo 2</h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="imgs/img-004.png" alt="Ian Acosta">
+        <h3>Ian Sebastian Acosta Brousset</h3>
+        <p>Publicidad y Marketing Digital</p>
+        <a href="mailto:2022171978@talento.tls.edu.pe">2022171978@talento.tls.edu.pe</a>
+      </div>
+      <div class="team-card">
+        <img src="imgs/img-006.png" alt="Allison Suarez">
+        <h3>Allison Marisol Suarez Arana</h3>
+        <p>Arquitectura de Interiores</p>
+        <a href="mailto:22022169833@talento.tls.edu.pe">22022169833@talento.tls.edu.pe</a>
+      </div>
+      <div class="team-card">
+        <img src="imgs/img-010.png" alt="Francesca Arias">
+        <h3>Francesca Mariana Arias Bernui</h3>
+        <p>Publicidad y Marketing Digital</p>
+        <a href="mailto:2020253574@talento.tls.edu.pe">2020253574@talento.tls.edu.pe</a>
+      </div>
+      <div class="team-card">
+        <img src="imgs/img-007.png" alt="Diego Toledo">
+        <h3>Diego Toledo Aquino</h3>
+        <p>Diseño y Gestión de Moda</p>
+        <a href="mailto:2023182890@talento.tls.edu.pe">2023182890@talento.tls.edu.pe</a>
+      </div>
+      <div class="team-card">
+        <img src="imgs/img-009.png" alt="Tracy Ramos">
+        <h3>Tracy Yadira Ramos Moriano</h3>
+        <p>Arquitectura de Interiores</p>
+        <a href="mailto:2023183652@talento.tls.edu.pe">2023183652@talento.tls.edu.pe</a>
+      </div>
+      <div class="team-card">
+        <img src="imgs/img-008.png" alt="Fabiana Riojas">
+        <h3>Fabiana Yllary Riojas Quijandria</h3>
+        <p>Dirección y Diseño Gráfico</p>
+        <a href="mailto:2023186535@talento.tls.edu.pe">2023186535@talento.tls.edu.pe</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════════ PROMEDIO 1 ════════════════════ -->
+<div class="prom-divider" id="prom1">
+  <div class="badge"><div class="dot"></div>Promedio 1<div class="dot"></div></div>
+</div>
+
+<div class="container">
+
+  <!-- ZENZI LOGO -->
+  <section class="block">
+    <div class="sec-header">
+      <div class="step-tag">Propuesta</div>
+      <h2>¿Qué es <span class="accent">ZENZI?</span></h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p>Zenzi es un <span class="highlight">peluche sensorial</span> diseñado para acompañar a los niños en su camino hacia la autorregulación emocional. A través de suaves vibraciones rítmicas y principios terapéuticos, este aliado discreto y portátil ayuda a calmar y sobrellevar episodios de ansiedad o estrés, incluso sin apoyo adulto inmediato.</p>
+        <p>Su estimulación sensorial, combinada con un <span class="highlight">punto focal de luz</span>, fomenta la autonomía y reduce la angustia, convirtiéndose en la herramienta ideal para brindar seguridad y bienestar en el hogar, el colegio o durante la terapia.</p>
+      </div>
+      <div>
+        <img src="imgs/img-057.png" alt="Zenzi peluche sensorial" class="full-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INVESTIGAR ── -->
+  <section class="block" id="investigar">
+    <div class="sec-header">
+      <div class="step-tag">Fase 1</div>
+      <h2>🔍 Investigar</h2>
+      <div class="divider-line"></div>
+    </div>
+
+    <h3 style="margin-bottom:1rem;color:var(--blue);font-size:1.2rem;">Problemática</h3>
+
+    <div class="two-col">
+      <div>
+        <p>En la última década, sobre todo en 2020 con la <span class="highlight">pandemia COVID-19</span>, la ansiedad en niños ha crecido exponencialmente debido a los cambios drásticos en sus rutinas normales. El aislamiento hizo que los niños no pudieran desarrollar algunas <span class="highlight">habilidades blandas</span> que debían ser formadas.</p>
+        <p>Sumado a esto, por la aparición de <span class="highlight">nuevas tecnologías</span> y la exposición temprana de los niños a estas, varios expertos han determinado que las maneras tradicionales de tratar de ansiedad ya no son muy efectivas, dejando cada vez con menos opciones a los padres para acompañar la ansiedad de sus niños.</p>
+      </div>
+      <div>
+        <img src="imgs/img-027.png" alt="Niños con ansiedad" class="full-img">
+      </div>
+    </div>
+
+    <div class="stat-row" style="margin-top:2rem;">
+      <div class="stat-card">
+        <div class="num">11%</div>
+        <p>De niños entre 3–17 años tiene ansiedad diagnosticada, siendo uno de los trastornos más comunes en la infancia.</p>
+      </div>
+      <div class="stat-card">
+        <div class="num">1 de 5</div>
+        <p>Niños ha sido diagnosticado con algún problema de salud mental desde edades tempranas.</p>
+      </div>
+      <div class="stat-card">
+        <div class="num">COVID-19</div>
+        <p>Aceleró el crecimiento de la ansiedad infantil al romper rutinas y aislar a los niños de sus redes sociales.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:2rem;">
+      <div>
+        <img src="imgs/img-029.png" alt="Gráfico salud mental infantil" class="full-img">
+        <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">Fuente: CDC — Condiciones de salud mental y del comportamiento por edad (2022–2023)</p>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Factores agravantes</h3>
+          <ul class="styled">
+            <li>Entornos familiares inestables</li>
+            <li>Presión académica</li>
+            <li>Cambios bruscos o experiencias traumáticas</li>
+            <li>Exposición temprana a pantallas digitales</li>
+          </ul>
+          <p>Organismos como la OMS advierten que cuando la ansiedad es persistente, <span class="highlight">interfiere con el funcionamiento diario, el sueño y el desarrollo emocional</span>, incluso desde la infancia.</p>
+          <p style="font-size:.75rem;color:#777;margin:0;">Fuente: El Comercio / OMS</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENCUESTA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Encuesta aplicada</h3>
+    <ul class="survey-list">
+      <li>¿Qué edad tiene su hijo/a?</li>
+      <li>¿Qué señales o comportamientos le hicieron sospechar que su hijo/a tiene ansiedad?</li>
+      <li>¿Con qué frecuencia su hijo/a presenta ansiedad, estrés o nerviosismo?</li>
+      <li>¿Ha sido diagnosticado con algún problema emocional o de salud mental?</li>
+      <li>¿En qué situaciones suele presentar más ansiedad?</li>
+      <li>¿Cómo reacciona su hijo/a en momentos de ansiedad?</li>
+      <li>¿Qué tan difícil le resulta ayudar a su hijo/a en esos momentos?</li>
+      <li>¿Qué suele hacer para ayudar a su hijo/a a calmarse?</li>
+      <li>¿Qué tan efectivas considera estas soluciones?</li>
+      <li>¿Qué tan útil le parecería una herramienta portátil que ayude a su hijo/a a calmarse por sí mismo?</li>
+      <li>¿En qué situaciones cree que sería más útil?</li>
+      <li>¿Qué características valoraría más en un producto así?</li>
+      <li>¿Estaría dispuesto/a a comprar un producto como Zenzi?</li>
+      <li>¿Cuánto estaría dispuesto/a a pagar?</li>
+      <li>¿Qué le gustaría que tenga este producto para que realmente le ayude a su hijo/a?</li>
+    </ul>
+
+    <!-- INSIGHTS -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Tabla de Insights Clave</h3>
+    <div style="overflow-x:auto;">
+      <table class="insights-table">
+        <thead>
+          <tr><th>Hallazgo</th><th>Insight</th><th>Oportunidad de Diseño</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>65.2% de los niños siente ansiedad por frustración al no lograr algo.</td>
+            <td>El niño no tiene herramientas para gestionar el error; la crisis es un grito de auxilio ante la falta de autonomía emocional.</td>
+            <td>Diseñar una mecánica de interacción que valide el esfuerzo, transformando el error en una experiencia sensorial positiva.</td>
+          </tr>
+          <tr>
+            <td>87% de los padres usa el habla/contacto físico para calmar, pero el 82.6% siente que es difícil.</td>
+            <td>Los padres son el único "cable a tierra" del niño, lo que genera un agotamiento mutuo y una dependencia emocional constante.</td>
+            <td>Crear un objeto que actúe como extensión del consuelo materno/paterno, permitiendo la autorregulación independiente.</td>
+          </tr>
+          <tr>
+            <td>El 60% de los niños usa pantallas más de 2h al día y el 34.8% ya muestra dependencia.</td>
+            <td>La pantalla es el "chupón digital" actual; calma el síntoma (llanto) pero agrava la causa (falta de atención y control).</td>
+            <td>Sustituir el estímulo visual dopaminérgico de la pantalla por un estímulo sensorial que relaje el sistema nervioso.</td>
+          </tr>
+          <tr>
+            <td>El 56.5% prioriza la seguridad de materiales y la facilidad de uso por encima del precio.</td>
+            <td>En momentos de crisis, el producto debe ser un refugio seguro; cualquier complejidad técnica se convierte en un nuevo estresor.</td>
+            <td>Utilizar texturas orgánicas y formas ergonómicas "sin instrucciones", que el niño entienda por instinto.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ANÁLISIS DE NECESIDADES -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Análisis de Necesidades y Frustraciones</h3>
+    <div class="two-col">
+      <div class="card">
+        <h3 style="color:#e74c3c;">😤 Frustraciones</h3>
+        <ul class="styled">
+          <li>Estrategias actuales poco efectivas o inconsistentes.</li>
+          <li>Dependencia de las pantallas, lo cual genera un efecto contraproducente.</li>
+          <li>Sobrecarga emocional del propio padre.</li>
+          <li>No se sientan las bases para una autonomía emocional.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:#27ae60;">✅ Necesidades</h3>
+        <ul class="styled">
+          <li>Solución inmediata y efectiva.</li>
+          <li>Simplicidad, menos es más.</li>
+          <li>Portabilidad.</li>
+          <li>Seguridad y confianza.</li>
+          <li>Autonomía del niño.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── IDEAR ── -->
+  <section class="block" id="idear">
+    <div class="sec-header">
+      <div class="step-tag">Fase 2</div>
+      <h2>💡 Idear</h2>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- SOLUCIÓN -->
+    <h3 style="margin-bottom:1rem;color:var(--blue);font-size:1.2rem;">Solución propuesta</h3>
+    <div class="two-col">
+      <div>
+        <p>Brindar una <span class="highlight">herramienta accesible y efectiva de autorregulación emocional</span>, que permita a los niños calmarse en momentos críticos, disminuir los síntomas físicos del pánico, y retomar el control sin necesidad de depender de entornos o dispositivos complejos.</p>
+      </div>
+      <div>
+        <img src="imgs/img-042.png" alt="Niña ansiosa" class="full-img" style="max-height:280px;object-fit:cover;object-position:center;">
+      </div>
+    </div>
+
+    <!-- VIABILIDAD -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Viabilidad de la Propuesta</h3>
+    <div class="viab-row">
+      <div class="viab-card">
+        <h3>⚙️ Viabilidad Técnica</h3>
+        <p>El producto puede ser prototipado y producido con tecnologías disponibles en el mercado local e industrial estándar.</p>
+      </div>
+      <div class="viab-card">
+        <h3>💰 Viabilidad Económica</h3>
+        <p>El producto puede ser rentable, accesible para el usuario y escalable a nivel de producción.</p>
+      </div>
+      <div class="viab-card">
+        <h3>🛒 Viabilidad Comercial</h3>
+        <p>Zenzi tiene potencial de inserción en el mercado como una solución innovadora dentro del segmento de bienestar infantil.</p>
+      </div>
+    </div>
+
+    <!-- OBJETIVOS -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Objetivos</h3>
+    <div class="two-col">
+      <div class="card" style="border-left:5px solid var(--green);">
+        <h3>Objetivo Principal</h3>
+        <p>Desarrollar un dispositivo portátil y fácil de usar que ayuda a los niños a autorregular sus emociones mediante estímulos sensoriales controlados y seguros.</p>
+      </div>
+      <div class="card">
+        <h3>Objetivos Específicos</h3>
+        <ul class="styled">
+          <li>Diseñar la configuración formal, ergonómica y estética de Zenzi de acuerdo al público objetivo.</li>
+          <li>Desarrollar un prototipo funcional que permita evaluar la interacción del niño con el objeto en distintos contextos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ODS -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">ODS Relacionados</h3>
+    <div class="ods-row">
+      <div class="ods-card ods-3">
+        <div class="num">3</div>
+        <h3>Salud y Bienestar</h3>
+        <p>Promueve el bienestar mental y emocional mediante una solución accesible y no invasiva.</p>
+      </div>
+      <div class="ods-card ods-4">
+        <div class="num">4</div>
+        <h3>Educación de Calidad</h3>
+        <p>Puede ayudar a los niños a regular sus emociones, mejorando la concentración, el aprendizaje y la convivencia escolar.</p>
+      </div>
+      <div class="ods-card ods-9">
+        <div class="num">9</div>
+        <h3>Industria e Innovación</h3>
+        <p>Fomenta el diseño de la tecnología orientada al bienestar humano.</p>
+      </div>
+    </div>
+
+    <!-- PERSONA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">User Persona</h3>
+    <div class="persona-box">
+      <div>
+        <img src="imgs/img-059.png" alt="Mateo Aliaga">
+      </div>
+      <div>
+        <h3>Mateo Aliaga</h3>
+        <div class="sub-name">Usuario principal · 5 años · Primer grado de primaria</div>
+        <div class="tag-row">
+          <span class="tag">Zona urbana — Magdalena</span>
+          <span class="tag">Amante de lo táctil</span>
+          <span class="tag">Comunicación limitada</span>
+        </div>
+        <p style="font-size:.85rem;opacity:.9;color:#fff;margin-bottom:1rem;">Mateo está en una etapa crucial de transición de la educación inicial a la primaria presencial. Sus padres trabajan y él asiste a un colegio con jornada completa. Es curioso y juguetón.</p>
+        <div class="col2">
+          <div class="mini-card">
+            <h4>Pain Points</h4>
+            <ul><li>😰 Sobrecarga sensorial</li><li>😟 Miedo a la soledad</li><li>😤 Frustración al expresarse</li><li>🏥 Aversión a lo "médico"</li></ul>
+          </div>
+          <div class="mini-card">
+            <h4>Motivaciones</h4>
+            <ul><li>🤗 Confort inmediato</li><li>🎨 Diversión amigable</li><li>👥 Pertenencia social</li><li>🌟 Autorregulación</li></ul>
+          </div>
+          <div class="mini-card">
+            <h4>Intereses</h4>
+            <ul><li>🎨 Pintura con dedos o tizas</li><li>🧸 Coleccionar peluches</li></ul>
+          </div>
+          <div class="mini-card">
+            <h4>Marcas favoritas</h4>
+            <ul><li>🧠 Fat Brain Toys</li><li>📺 Disney+</li><li>🧱 LEGO</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAPA DE EMPATÍA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Mapa de Empatía</h3>
+    <div class="empathy-grid">
+      <div class="empathy-card">
+        <h3>🧠 ¿Qué piensa y siente?</h3>
+        <p>En su interior, Mateo experimenta una constante inseguridad ante la posibilidad de cambios inesperados en su día a día y un temor natural a la soledad. Esta sensación se mezcla con la frustración de no poder expresar verbalmente sus emociones, naciendo en él un deseo genuino de encontrar confort y seguridad de manera inmediata. Se percibe a sí mismo simplemente como un niño que busca tranquilidad para jugar, sin sentir que deba ser "curado".</p>
+      </div>
+      <div class="empathy-card">
+        <h3>👀 ¿Qué ve?</h3>
+        <p>Mateo se enfrenta a una transición escolar hacia un entorno de primaria más grande y estructurado, mientras que en casa vive una rutina urbana marcada por el trabajo de sus padres. Sus referentes visuales son personajes de Disney+, LEGO y formas orgánicas, pero se mantiene muy atento a sus compañeros debido al miedo de ser juzgado o verse "diferente".</p>
+      </div>
+      <div class="empathy-card">
+        <h3>👂 ¿Qué oye?</h3>
+        <p>En el colegio, Mateo percibe un entorno cargado de instrucciones constantes, el fuerte ruido ambiental que llega a abrumarlo y las interacciones de sus compañeros. En el ámbito familiar, escucha frecuentemente sobre las responsabilidades laborales de sus padres y la relevancia de mantener sus rutinas.</p>
+      </div>
+      <div class="empathy-card">
+        <h3>💬 ¿Qué dice y hace?</h3>
+        <p>Mateo interactúa con su entorno a través de la exploración táctil, buscando constantemente apretar texturas suaves y participando en actividades manuales como pintar con los dedos o jugar con tizas. Ante situaciones de estrés o sobrecarga, suele manifestar su inquietud mediante movimientos corporales.</p>
+      </div>
+    </div>
+
+    <!-- FODA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Análisis FODA</h3>
+    <div class="foda-grid">
+      <div class="foda-card foda-f">
+        <h3>💪 Fortalezas</h3>
+        <ul class="styled">
+          <li>Enfoque en regulación sensorial (no distracción)</li>
+          <li>Facilidad de uso</li>
+          <li>Portabilidad</li>
+          <li>Bajo nivel tecnológico</li>
+          <li>Solución no digital en un contexto saturado de pantallas</li>
+        </ul>
+      </div>
+      <div class="foda-card foda-o">
+        <h3>🌱 Oportunidades</h3>
+        <ul class="styled">
+          <li>Padres buscando alternativas a pantallas</li>
+          <li>Tendencia hacia bienestar emocional infantil</li>
+          <li>Mercado poco explotado en LATAM</li>
+          <li>Crecimiento de la ansiedad infantil</li>
+          <li>Herramientas actuales poco eficientes</li>
+        </ul>
+      </div>
+      <div class="foda-card foda-d">
+        <h3>⚠️ Debilidades</h3>
+        <ul class="styled">
+          <li>Limitación funcional</li>
+          <li>Dependencia de percepción subjetiva</li>
+          <li>Falta de validación clínica</li>
+        </ul>
+      </div>
+      <div class="foda-card foda-a">
+        <h3>⚡ Amenazas</h3>
+        <ul class="styled">
+          <li>Escepticismo de padres</li>
+          <li>Preferencia por soluciones inmediatas</li>
+          <li>Falta de cultura sobre salud mental infantil</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- COMPETENCIA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Análisis de Competencia</h3>
+    <div class="comp-compare">
+      <div class="comp-comp-card">
+        <h3>Moonbuddy</h3>
+        <span class="price-badge">€79</span>
+        <ul class="styled">
+          <li>Dispositivo portátil para niños, sin pantalla</li>
+          <li>Guía la respiración con estímulo físico</li>
+          <li>Se usa de forma autónoma</li>
+          <li>👉 Funciona porque el niño siente cómo el objeto se expande y contrae y respira con él</li>
+          <li>👉 Diseñado específicamente para enseñar autorregulación emocional a través de la respiración</li>
+        </ul>
+        <img src="imgs/img-084.png" alt="Moonbuddy" class="full-img">
+      </div>
+      <div class="comp-comp-card">
+        <h3>Breathing Pal (Innocity)</h3>
+        <span class="price-badge">$16 – $25</span>
+        <ul class="styled">
+          <li>Dispositivo portátil para niños, sin pantalla</li>
+          <li>Guía la respiración mediante estímulos visuales (luz)</li>
+          <li>Más accesible económicamente</li>
+          <li>👉 Funciona porque el niño sigue el ritmo de la luz para inhalar y exhalar</li>
+          <li>👉 Diseñado para ayudar a calmar la ansiedad y fomentar la autorregulación emocional a través de la respiración</li>
+        </ul>
+        <img src="imgs/img-089.png" alt="Breathing Pal" class="full-img">
+      </div>
+    </div>
+
+    <!-- CANALES -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Canales de Distribución</h3>
+    <div class="channels">
+      <div class="channel-card">
+        <div class="num">1</div>
+        <h3>Canales Digitales</h3>
+        <ul class="styled" style="color:#fff;opacity:.9;">
+          <li>E-commerce Propio</li>
+          <li>Marketplaces</li>
+          <li>Redes Sociales</li>
+        </ul>
+      </div>
+      <div class="channel-card">
+        <div class="num">2</div>
+        <h3>Canales Especializados</h3>
+        <ul class="styled" style="color:#fff;opacity:.9;">
+          <li>Farmacias Dermatológicas</li>
+          <li>Consultorios de Psicología</li>
+          <li>Tiendas de Juguetes Educativos</li>
+        </ul>
+      </div>
+      <div class="channel-card">
+        <div class="num">3</div>
+        <h3>Sector Educativo</h3>
+        <ul class="styled" style="color:#fff;opacity:.9;">
+          <li>Colegios y Nidos (Pre-escolar)</li>
+          <li>Depts. de Psicopedagogía</li>
+        </ul>
+      </div>
+      <div class="channel-card">
+        <div class="num">4</div>
+        <h3>Retail Físico Selectivo</h3>
+        <ul class="styled" style="color:#fff;opacity:.9;">
+          <li>Concept Stores</li>
+          <li>Tiendas para Bebés y Maternidad</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROTOTIPAR (PROM 1) ── -->
+  <section class="block" id="prototipar1">
+    <div class="sec-header">
+      <div class="step-tag">Fase 3 — Promedio 1</div>
+      <h2>🧩 Prototipar</h2>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Diseño -->
+    <h3 style="margin-bottom:1rem;color:var(--blue);font-size:1.2rem;">Diseño del Prototipo (Boceto y Render)</h3>
+    <div class="two-col">
+      <div>
+        <img src="imgs/img-071.png" alt="Boceto inicial Zenzi" class="full-img">
+        <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">Boceto a mano — forma ergonómica tipo nube</p>
+      </div>
+      <div>
+        <img src="imgs/img-072.png" alt="Render digital Zenzi" class="full-img">
+        <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">Render digital con componentes internos visibles</p>
+      </div>
+    </div>
+
+    <!-- Simulación -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Simulación Electrónica — Tinkercad</h3>
+    <img src="imgs/img-075.png" alt="Simulación electrónica Tinkercad" class="full-img">
+    <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">
+      Tinkercad: <a href="https://www.tinkercad.com/things/39b1APialon/editel?sharecode=K0Twc45wizj5mWoMSqhNq1KsQgSuQaBVUHWwomkDHjo" target="_blank">Ver simulación online</a>
+    </p>
+
+    <!-- Código -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Código Arduino (Promedio 1)</h3>
+    <div class="code-block">int estadoActual = 0;
+bool botonAnterior = HIGH;
+
+void setup() {
+  pinMode(A0, INPUT);   // Botón
+  pinMode(13, OUTPUT);  // Vibrador
+  pinMode(6, OUTPUT);   // LED
+  digitalWrite(13, LOW);
+  digitalWrite(6, LOW);
+}
+
+void loop() {
+  bool botonActual = digitalRead(A0);
+
+  if (botonAnterior == LOW && botonActual == HIGH) {
+    estadoActual = (estadoActual + 1) % 3;
+    delay(50);
+  }
+
+  botonAnterior = botonActual;
+
+  if (estadoActual == 0) {
+    digitalWrite(13, LOW);
+    digitalWrite(6, LOW);
+
+  } else if (estadoActual == 1) {
+    // Solo vibrador respiracion lenta
+    digitalWrite(13, HIGH);
+    delay(2000);
+    digitalWrite(13, LOW);
+    delay(2000);
+
+  } else if (estadoActual == 2) {
+    // Vibrador + LED misma respiracion
+    digitalWrite(13, HIGH);
+    digitalWrite(6, HIGH);
+    delay(2000);
+    digitalWrite(13, LOW);
+    digitalWrite(6, LOW);
+    delay(2000);
+  }
+}</div>
+
+    <!-- Lista de componentes -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Lista de Componentes</h3>
+    <img src="imgs/img-105.png" alt="Lista de componentes Zenzi" class="full-img">
+
+    <!-- Costo de materiales -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Presupuesto — Costo de Materiales</h3>
+    <div class="two-col">
+      <div>
+        <table class="price-table">
+          <thead><tr><th>Componente</th><th>Precio aprox.</th></tr></thead>
+          <tbody>
+            <tr><td>Arduino</td><td>S/35 – S/155</td></tr>
+            <tr><td>LED RGB</td><td>S/0.10 - S/0.50</td></tr>
+            <tr><td>Motor vibrador</td><td>S/5 – S/15</td></tr>
+            <tr><td>Botón pulsador</td><td>S/0.50 – S/2</td></tr>
+            <tr><td>Optoacoplador</td><td>S/1 - S/0.50</td></tr>
+            <tr><td>Transistor NPN</td><td>S/1 - S/0.50</td></tr>
+            <tr><td>Resistencia</td><td>S/0.10 – S/0.50</td></tr>
+            <tr><td>Filamento</td><td>S/60</td></tr>
+            <tr><td>Cartón prototipado 1</td><td>S/20</td></tr>
+          </tbody>
+        </table>
+        <div class="price-total">TOTAL ESTIMADO: S/ 133.50</div>
+      </div>
+      <div>
+        <img src="imgs/img-113.png" alt="Presupuesto Zenzi" class="full-img">
+      </div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- ════════════════════ PROMEDIO 2 ════════════════════ -->
+<div class="prom-divider" id="prom2">
+  <div class="badge"><div class="dot"></div>Promedio 2<div class="dot"></div></div>
+</div>
+
+<div class="container">
+
+  <!-- QUÉ ES ZENZI (P2) -->
+  <section class="block" id="prototipar2">
+    <div class="sec-header">
+      <div class="step-tag">Presentación — Promedio 2</div>
+      <h2>ZENZI — <span class="accent">El abrazo que calma su mundo</span></h2>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <p>Zenzi es un peluche sensorial diseñado para acompañar a los niños en su camino hacia la autorregulación emocional. A través de <span class="highlight">suaves vibraciones rítmicas</span> y principios terapéuticos, este aliado discreto y portátil ayuda a calmar y sobrellevar episodios de ansiedad o estrés, incluso sin apoyo adulto inmediato.</p>
+        <p>Su estimulación sensorial, combinada con un <span class="highlight">punto focal de luz</span>, fomenta la autonomía y reduce la angustia, convirtiéndose en la herramienta ideal para brindar seguridad y bienestar en el hogar, el colegio o durante la terapia.</p>
+      </div>
+      <div>
+        <img src="imgs/img-132.png" alt="Zenzi peluche P2" class="full-img">
+      </div>
+    </div>
+
+    <!-- Simulación P2 -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Simulación Electrónica P2 — Tinkercad</h3>
+    <img src="imgs/img-158.png" alt="Simulación electrónica Promedio 2" class="full-img">
+
+    <!-- Proteus -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Circuito en Proteus</h3>
+    <img src="imgs/img-162.png" alt="Circuito Proteus Zenzi" class="full-img">
+    <p style="font-size:.84rem;color:#555;margin-top:.6rem;">El circuito de proyecto "ZENZI" en Proteus incluye un <strong>Simulino Nano</strong>, optoacoplador 4N25, transistor BC548C, LED y motor vibrador como carga.</p>
+
+    <!-- Código P2 -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Código Arduino (Promedio 2)</h3>
+    <div class="code-block">#define boton A0        //Define los nombres de los pines usados
+#define ledPin 13
+void setup()
+{
+  pinMode(boton,INPUT);     //Configura el pin como entrada
+  pinMode(ledPin,OUTPUT);   //Configura el pin como salida
+  digitalWrite(ledPin,LOW); // Inicia el Led apagado
+}
+void loop()
+{
+  if (digitalRead(boton) == HIGH)   //Si el boton es presionado, si es 1
+  {
+    delay(50);                        // tiempo de Anti-rebote
+
+    ejecutarFase(100,3000);           // FASE 1: Muy Rápido (100ms) durante 3 segundos
+
+    ejecutarFase(500,3000);           // FASE 2: Velocidad Media (500ms) durante 3 segundos
+
+    for(int x=1;x<=10;x++)          //Repite 10 veces
+    {
+      ejecutarFase(2000,4000);        // Fase 3 Velocidad Lenta durante 4 segundos
+    }
+    digitalWrite(ledPin,LOW);        // Apaga Led o Vibrador
+  }
+}
+
+void ejecutarFase(int velocidad, int duracionTotal) // Función para parpadear a una velocidad por un tiempo determinado
+{
+  unsigned long inicio = millis();                // Guarda el tiempo transcurrido desde que se encendió Arduino
+  while (millis() - inicio < duracionTotal)      // Mientras el tiempo sea menor al tiempo total
+  {
+    digitalWrite(ledPin, HIGH);                  //Enciende y apaga led con intervalos de tiempo asignado
+    delay(velocidad);
+    digitalWrite(ledPin, LOW);
+    delay(velocidad);
+  }
+}</div>
+
+    <!-- Plano de Circuito -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Plano de Circuito</h3>
+    <img src="imgs/img-210.png" alt="Plano de circuito Zenzi" class="full-img">
+
+    <!-- DISEÑO DEL PROTOTIPO FÍSICO -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Diseño del Prototipo Físico — Peluche (Tela Tocuyo)</h3>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="imgs/img-170.png" alt="Prototipo sin pinzas">
+        <div class="caption">Sin pinzas — Se modificó el patrón para que no quede bolsudo</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-171.png" alt="Prototipo con pinzas">
+        <div class="caption">Con pinzas — Descartado porque genera pliegues en el peluche</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-172.png" alt="Prototipo lado">
+        <div class="caption">Vista lateral del prototipo en tela tocuyo</div>
+      </div>
+    </div>
+
+    <div class="gallery" style="margin-top:1rem;">
+      <div class="gallery-item">
+        <img src="imgs/img-175.png" alt="Patrón con círculo marcado">
+        <div class="caption">Patrón con círculo para la luz LED marcado</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-176.png" alt="Patrón recortado">
+        <div class="caption">Patrón recortado con hueco circular</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-177.png" alt="Costura a máquina">
+        <div class="caption">Proceso de costura a máquina del borde circular</div>
+      </div>
+    </div>
+
+    <div class="gallery" style="margin-top:1rem;">
+      <div class="gallery-item">
+        <img src="imgs/img-180.png" alt="Piezas de tela nube frente">
+        <div class="caption">Pieza delantera en forma de nube — tela tocuyo</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-181.png" alt="Piezas de tela nube espalda con hueco">
+        <div class="caption">Pieza trasera con hueco para la luz</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-182.png" alt="Piezas con alfileres">
+        <div class="caption">Piezas unidas con alfileres antes de coser</div>
+      </div>
+    </div>
+
+    <div class="gallery" style="margin-top:1rem;">
+      <div class="gallery-item">
+        <img src="imgs/img-185.png" alt="Prototipo 1 frente terminado">
+        <div class="caption">Prototipo 1 — Vista frontal terminado</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-186.png" alt="Prototipo 1 espalda">
+        <div class="caption">Prototipo 1 — Vista posterior con abertura</div>
+      </div>
+    </div>
+
+    <!-- CARCASA DEL SISTEMA -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Carcasa del Sistema — Diseño en SketchUp</h3>
+    <div class="two-col">
+      <div>
+        <img src="imgs/img-116.png" alt="Carcasa SketchUp vista 1" class="full-img">
+      </div>
+      <div>
+        <img src="imgs/img-117.png" alt="Carcasa SketchUp vista 2" class="full-img">
+      </div>
+    </div>
+    <p style="font-size:.82rem;color:#555;margin-top:.5rem;">Diseño de la carcasa en <strong>SketchUp</strong> — Medidas: Largo 8cm × Ancho 8cm × Alto 4cm</p>
+
+    <!-- CARCASA FÍSICA EN CARTÓN -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Carcasa del Sistema Prototipo — Cartón</h3>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="imgs/img-195.png" alt="Carcasa cartón vista 1">
+        <div class="caption">Caja en cartón — Vista frontal lateral</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-197.png" alt="Carcasa cartón vista 2">
+        <div class="caption">Caja en cartón — Vista frontal alzado</div>
+      </div>
+      <div class="gallery-item">
+        <img src="imgs/img-199.png" alt="Carcasa cartón vista 3">
+        <div class="caption">Caja en cartón — Vista isométrica</div>
+      </div>
+    </div>
+    <p style="font-size:.82rem;color:#555;margin-top:.5rem;">Caja realizada en cartón — Medidas: Largo 8cm × Ancho 8cm × Alto 4cm</p>
+
+    <!-- VIBRADOR PROTOTIPO -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Prototipo del Vibrador de Zenzi</h3>
+    <div class="two-col">
+      <div>
+        <img src="imgs/img-203.png" alt="Vibrador cartón vista interna" class="full-img">
+        <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">Vista interna del vibrador en cartón</p>
+      </div>
+      <div>
+        <img src="imgs/img-205.png" alt="Vibrador cartón con tapa" class="full-img">
+        <p style="font-size:.78rem;color:#666;margin-top:.4rem;font-style:italic;">Vista exterior con tapa circular — 6 cm de diámetro</p>
+      </div>
+    </div>
+
+    <!-- CARCASA P2 -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Carcasa del Sistema — Versión SketchUp actualizada</h3>
+    <div class="two-col">
+      <div>
+        <img src="imgs/img-120.png" alt="Carcasa SketchUp v2 abierta" class="full-img">
+      </div>
+      <div>
+        <img src="imgs/img-123.png" alt="Carcasa SketchUp v2 cerrada" class="full-img">
+      </div>
+    </div>
+
+    <!-- PLANOS TÉCNICOS -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Planos Técnicos (AutoCAD)</h3>
+    <img src="imgs/img-094.png" alt="Planos técnicos Zenzi AutoCAD" class="full-img">
+    <p style="font-size:.82rem;color:#555;margin-top:.5rem;">Planos técnicos del proyecto Zenzi — Curso: Laboratorio 2 | Docente: Yohanna Villanueva | Fecha: 07/11/2025</p>
+
+    <!-- ELECTRÓNICA FUNCIONAL -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Electrónica Funcional — Ensamble Real</h3>
+    <img src="imgs/img-209.png" alt="Electrónica funcional real Zenzi" class="full-img">
+    <p style="font-size:.82rem;color:#555;margin-top:.5rem;">Electrónica funcional armada en laboratorio con Arduino Nano, motor vibrador, LED y batería Li-Po.</p>
+
+    <!-- LISTA DE MATERIALES REAL -->
+    <h3 style="margin:2rem 0 1rem;color:var(--blue);font-size:1.2rem;">Lista de Materiales — Estimado vs Real</h3>
+    <div class="two-col">
+      <div>
+        <h4 style="margin-bottom:.7rem;color:var(--blue);">📋 Materiales Estimados</h4>
+        <table class="price-table">
+          <thead><tr><th>Componente</th><th>Precio aprox.</th></tr></thead>
+          <tbody>
+            <tr><td>Arduino</td><td>S/35 – S/155</td></tr>
+            <tr><td>LED RGB</td><td>S/0.10 - S/0.50</td></tr>
+            <tr><td>Motor vibrador</td><td>S/5 – S/15</td></tr>
+            <tr><td>Botón pulsador</td><td>S/0.50 – S/2</td></tr>
+            <tr><td>Optoacoplador</td><td>S/1 - S/0.50</td></tr>
+            <tr><td>Transistor NPN</td><td>S/1 - S/0.50</td></tr>
+            <tr><td>Resistencia</td><td>S/0.10 – S/0.50</td></tr>
+            <tr><td>Filamento</td><td>S/60</td></tr>
+            <tr><td>Cartón prototipado</td><td>S/20</td></tr>
+          </tbody>
+        </table>
+        <div class="price-total">Total estimado: S/ 133.50</div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:.7rem;color:#27ae60;">✅ Materiales Reales</h4>
+        <table class="price-table">
+          <thead><tr><th>Componente</th><th>Precio real</th></tr></thead>
+          <tbody>
+            <tr><td>Obtotransitor</td><td>S/2</td></tr>
+            <tr><td>Transitor</td><td>S/0.50</td></tr>
+            <tr><td>Resistencia 2x</td><td>S/0.80</td></tr>
+            <tr><td>Arduino nano</td><td>S/20</td></tr>
+            <tr><td>Batería</td><td>S/6</td></tr>
+            <tr><td>Cargador de batería</td><td>S/6</td></tr>
+            <tr><td>Baquelita</td><td>S/2</td></tr>
+            <tr><td>Ácido férrico</td><td>S/6</td></tr>
+            <tr><td>Motor</td><td>S/4</td></tr>
+            <tr><td>LED</td><td>S/0.30</td></tr>
+            <tr><td>Piloto (carcasa)</td><td>S/6</td></tr>
+            <tr><td>Interruptor</td><td>S/3</td></tr>
+            <tr><td>Botón pulsador</td><td>S/3</td></tr>
+            <tr><td>Tela de felpa 1 metro</td><td>S/10</td></tr>
+            <tr><td>Hilo</td><td>S/1</td></tr>
+            <tr><td>Impresión 3D</td><td>S/30</td></tr>
+            <tr><td>Cables</td><td>S/7</td></tr>
+          </tbody>
+        </table>
+        <div class="price-total">Total real: S/ 77.60</div>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>ZENZI</strong> — "El abrazo que calma su mundo"</p>
+  <p style="margin-top:.5rem;">Laboratorio de Innovación 2 · Grupo 2 · Ciclo 7 · <strong>Toulouse Lautrec</strong></p>
+  <p style="margin-top:.3rem;">Docente: Yohanna Villanueva · 2025</p>
+</footer>
+
+</body>
+</html>
